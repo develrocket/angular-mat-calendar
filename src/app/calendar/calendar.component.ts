@@ -16,6 +16,7 @@ import {
   CdkDropList,
   CdkDropListGroup
 } from '@angular/cdk/drag-drop';
+import {MatOption, MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-calendar',
@@ -26,6 +27,8 @@ import {
     MatIconButton,
     NgIf,
     NgForOf,
+    MatSelect,
+    MatOption,
     CommonModule,
     CdkDropList,
     CdkDrag,

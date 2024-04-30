@@ -9,7 +9,7 @@
       </mat-icon>
     </button>
 
-    <div style="display: flex; flex-direction: row; justify-content: center;">
+    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center">
       <span>
         {{ actDate }}
       </span>
@@ -29,15 +29,15 @@
 
   <div class="header-select-date" style="min-height: 30px;" *ngIf="showChangeDate">
 
-    <select name="year" class="selects" (change)="onYearChange($event)">
-      <option *ngFor="let y of years" [value]="y" [selected]="y === currentYear">{{ y }}
-      </option>
-    </select>
+    <mat-select name="year" class="selects" [(value)]="currentYear" (change)="onYearChange($event)">
+      <mat-option *ngFor="let y of years" [value]="y">{{ y }}
+      </mat-option>
+    </mat-select>
 
-    <select name="month" class="selects" (change)="onMonthChange($event)">
-      <option *ngFor="let m of months" [value]="m.id" [selected]="m.id === currentMonth">{{ m.name }}
-      </option>
-    </select>
+    <mat-select name="month" class="selects" [(value)]="currentMonth" (change)="onMonthChange($event)">
+      <mat-option *ngFor="let m of months" [value]="m.id">{{ m.name }}
+      </mat-option>
+    </mat-select>
 
   </div>
 

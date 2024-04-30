@@ -4,10 +4,30 @@ import {hours} from "../../calendar/Localization/hours";
 import {minutes} from "../../calendar/Localization/minutes";
 import {IEventData} from "../../calendar/Interface/IEventData";
 import {colours} from "../../calendar/Localization/colours";
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatButtonModule} from "@angular/material/button";
+import {MatSelectModule} from "@angular/material/select";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-edit-event-dialog',
   templateUrl: './edit-event-dialog.component.html',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    FormsModule,
+  ],
   styleUrls: ['./edit-event-dialog.component.scss']
 })
 export class EditEventDialogComponent implements OnInit {

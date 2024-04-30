@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
-import { IEventData } from "./calendar/Interface/IEventData";
-import {MatDialog} from "@angular/material/dialog";
+import {Component} from '@angular/core';
+import {IEventData} from "./calendar/Interface/IEventData";
 import {EventDialogComponent} from "./dialog/event-dialog/event-dialog.component";
+import {DialogService} from "./dialog.service";
+import {MatButtonModule} from "@angular/material/button";
+import {CalendarComponent} from "./calendar/calendar.component";
+import {RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [
+    MatButtonModule,
+    CalendarComponent,
+    RouterOutlet
+  ],
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
@@ -13,7 +22,8 @@ export class AppComponent {
   language: string = 'en';
   dataArray: IEventData[] = [];
 
-  constructor(public dialog: MatDialog) { }
+  constructor(private dialogService: DialogService) {
+  }
 
   addEvent(event: any) {
     alert(event);
@@ -23,12 +33,8 @@ export class AppComponent {
   }
 
   selectDay(event: any) {
-    console.log('select-day-event');
     if (event.events) {
-      const dialogRef = this.dialog.open(EventDialogComponent, {
-        width: '80%',
-        height: '90%',
-        data: event
+      this.dialogService.openDialog(EventDialogComponent, event).subscribe(_ => {
       });
     }
   }

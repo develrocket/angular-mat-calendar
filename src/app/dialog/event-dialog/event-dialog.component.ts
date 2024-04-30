@@ -1,33 +1,51 @@
+import {Component, Inject, OnInit} from "@angular/core";
+import {MAT_DIALOG_DATA, MatDialogClose, MatDialogRef} from '@angular/material/dialog';
+import {AddEventDialogComponent} from '../add-event-dialog/add-event-dialog.component';
+import {EditEventDialogComponent} from '../edit-event-dialog/edit-event-dialog.component';
+import {DialogService} from "../../dialog.service";
+import {ConfirmDialogData} from "../confirm-dialog/confirm-dialog.component";
+import { of } from 'rxjs';
+import { filter, toArray } from 'rxjs/operators';
 import {CommonModule} from "@angular/common";
-import { Component, OnInit, Inject } from "@angular/core";
-import {MatDialogRef, MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
-import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
-import { EditEventDialogComponent} from '../edit-event-dialog/edit-event-dialog.component';
-
+import {MatDividerModule} from "@angular/material/divider";
+import {MatButtonModule} from "@angular/material/button";
+import {MatSelectModule} from "@angular/material/select";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatIconModule} from "@angular/material/icon";
+import {FormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @Component({
   selector: "app-event-dialog",
   templateUrl: "./event-dialog.component.html",
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatDividerModule,
+    MatDialogClose,
+    MatButtonModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    FormsModule,
+  ],
   styleUrls: ["./event-dialog.component.scss"]
 })
 export class EventDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<EventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialog
-  ) {}
+    private dialogService: DialogService
+  ) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   addEvent() {
-    console.log('call-add-event:', this.data);
-    const dialogRef1 = this.dialog.open(AddEventDialogComponent, {
-      width: '80%',
-      height: '90%',
-      data: this.data
-    });
-
-    dialogRef1.afterClosed().subscribe(result => {
+    this.dialogService.openDialog(AddEventDialogComponent, this.data).subscribe(result => {
       if (result.event) {
         this.data.events.push(result.event);
       }
@@ -39,11 +57,30 @@ export class EventDialogComponent implements OnInit {
   }
 
   editEvent(data: any) {
-    const dialogRef2 = this.dialog.open(EditEventDialogComponent, {
-      width: '80%',
-      height: '90%',
-      data: data
-    });
+    this.dialogService.openDialog(EditEventDialogComponent, data).subscribe(_ => {
+    })
   }
 
+  deleteEvent(data: any) {
+    const dialogData: ConfirmDialogData = {
+      title: 'Confirm Delete',
+      message: 'Are you sure you want to delete this item?'
+    };
+
+    this.dialogService.showConfirm(dialogData).subscribe(result => {
+      if (result === false) {
+        // User canceled
+      } else {
+        of(this.data.events)
+          .pipe(
+            filter((obj) => obj.id !== data.id),
+            toArray()
+          )
+          .subscribe(filteredItems => {
+            console.log('filtered-items:', filteredItems);
+            this.data.events = filteredItems;
+          });
+      }
+    })
+  }
 }

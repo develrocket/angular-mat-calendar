@@ -19,9 +19,14 @@
                 <b>Start:</b> {{ event.startDate | date: "yyyy-MM-dd HH:mm" }}
                 {{ event.title }} - {{ event.desc }} - Created:{{ event.createdBy }}
             </div>
-            <button (click)="editEvent(event)" class="edit-button">
+            <div>
+              <button (click)="editEvent(event)" class="edit-button">
                 Edit
-            </button>
+              </button>
+              <button (click)="deleteEvent(event)" class="edit-button">
+                Delete
+              </button>
+            </div>
         </div>
     </div>
 </div>
